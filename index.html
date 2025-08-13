@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="mnw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Typing Tutor - ဂကောံအက္ခရ်မန်</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="typing-container">
+  <div class="container mx-auto px-4 py-6">
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6">
+      <div class="text-center mx-auto">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/207fcc5a-95be-4d5b-b631-f508d63f79b3.png"
+          alt="Mon typing tutor logo" class="mx-auto mb-2 rounded-full shadow-lg w-20 h-20 object-cover" />
+        <h1 class="text-3xl font-bold text-white mb-1">Mon Typing Tutor</h1>
+        <p class="text-base text-purple-100 mon-text">ဗ္တောန်တက်လိက်မန်စိုအ်</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="openHistory()"
+          class="bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg text-sm backdrop-blur border border-white/30">
+          <i class="fa fa-user mr-1"></i>Profile</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8" id="statsContainer">
+      <div class="stats-card rounded-lg p-6 text-center text-white">
+        <div class="text-3xl font-bold" id="wpmDisplay">0</div>
+        <div class="text-sm opacity-75">WPM</div>
+      </div>
+      <div class="stats-card rounded-lg p-6 text-center text-white">
+        <div class="text-3xl font-bold" id="accuracyDisplay">100%</div>
+        <div class="text-sm opacity-75 mon-text">ဍာံပြ</div>
+      </div>
+      <div class="stats-card rounded-lg p-6 text-center text-white">
+        <div class="text-3xl font-bold" id="timeDisplay">0:00</div>
+        <div class="text-sm opacity-75 mon-text">အခိင်</div>
+      </div>
+      <div class="stats-card rounded-lg p-6 text-center text-white">
+        <div class="relative w-16 h-16 mx-auto">
+          <svg class="progress-ring w-16 h-16">
+            <circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,0.3)" stroke-width="4" fill="transparent" />
+            <circle id="progressCircle" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="4"
+              fill="transparent" stroke-dasharray="175.929" stroke-dashoffset="175.929" class="progress-ring-circle" />
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span id="progressText" class="text-sm font-bold">0%</span>
+          </div>
+        </div>
+        <div class="text-sm opacity-75 mt-2 mon-text">မူစိက္ဍိုပ်ကၠံ</div>
+      </div>
+    </div>
+
+    <!-- Lesson Selection -->
+    <div class="mb-8" id="lessonSelection">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-2xl font-bold text-white mon-text">ရုဲစှ်ပါဲနူဂကောံအက္ခရ်</h2>
+        <label class="text-sm text-white/90 flex items-center gap-2">
+          <input type="checkbox" id="shuffleToggle" class="accent-purple-600"> Shuffle
+        </label>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="lesson-card bg-white rounded-lg p-6 text-center" onclick="startLesson('beginner')">
+          <div class="text-4xl mb-2">🌱</div>
+          <h3 class="text-xl font-bold mb-1">တမ်မူလ</h3>
+          <p class="text-gray-600">အက္ခရ်မန် / ဝေါဟာရ</p>
+          <p class="mon-text text-lg mt-2">က ခ ဂ ဃ ၚ</p>
+        </div>
+        <div class="lesson-card bg-white rounded-lg p-6 text-center" onclick="startLesson('intermediate')">
+          <div class="text-4xl mb-2">📚</div>
+          <h3 class="text-xl font-bold mb-1">ကဵုလဒေါဝ်</h3>
+          <p class="text-gray-600">ဝေါဟာရ / ဝါကျ</p>
+          <p class="mon-text text-lg mt-2">မ္ၚဵုရအဴ</p>
+        </div>
+        <div class="lesson-card bg-white rounded-lg p-6 text-center" onclick="startLesson('advanced')">
+          <div class="text-4xl mb-2">🏆</div>
+          <h3 class="text-xl font-bold mb-1">ဇၞော်ကဵုဒြဟတ်</h3>
+          <p class="text-gray-600">လိက်ပတ် / ကဗျ</p>
+          <p class="mon-text text-lg mt-2">လိက်ပတ် ကေုာံ ကဗျ</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing Interface -->
+    <div class="hidden" id="typingInterface">
+      <div class="bg-white rounded-lg shadow-2xl p-8 max-w-5xl mx-auto">
+        <div class="mb-6">
+          <div class="bg-gray-50 rounded-lg p-6 border-2 border-gray-200">
+            <div id="textDisplay" class="mon-text text-2xl leading-relaxed"></div>
+          </div>
+        </div>
+        <div class="mb-6">
+          <div class="relative">
+            <textarea id="typingInput"
+              class="w-full h-32 p-4 border-2 border-gray-300 rounded-lg mon-text text-xl resize-none focus:border-blue-500 focus:outline-none"
+              placeholder="စတိုန်ရိုဟ်စၞောန်ထ္ၜး ပ္ဍဲဏအ်..." disabled></textarea>
+            <div id="keyboardHint" class="keyboard-hint absolute bottom-2 right-2 hidden">
+              <span class="mon-text">ဂတ: <span id="nextChar" class="font-bold text-lg"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-wrap gap-3 justify-center mb-4">
+          <button onclick="startTyping()" id="startBtn"
+            class="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg font-semibold transition-colors">
+            <i class="fas fa-play mr-2"></i>Start
+          </button>
+          <button onclick="pauseTyping()" id="pauseBtn"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-3 rounded-lg font-semibold transition-colors hidden">
+            <i class="fas fa-pause mr-2"></i>Pause
+          </button>
+          <button onclick="resetTyping()" id="resetBtn"
+            class="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-lg font-semibold transition-colors">
+            <i class="fas fa-redo mr-2"></i>Reset
+          </button>
+          <button onclick="backToLessons()"
+            class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-3 rounded-lg font-semibold transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>Back
+          </button>
+          <button onclick="toggleSound()" id="soundBtn" title="Toggle sound effects"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg font-semibold">
+            <i class="fas fa-volume-up"></i>
+          </button>
+        </div>
+
+        <!-- Virtual Keyboard + Finger Guide -->
+        <div class="virtual-keyboard">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-bold mon-text">Virtual Keyboard</h3>
+            <div class="flex items-center gap-2">
+              <label class="text-sm text-gray-700 flex items-center gap-2">
+                Layout:
+                <select id="layoutSelect" class="border rounded px-2 py-1">
+                  <option value="unicode">Mon Unicode</option>
+                  <option value="a1">Mon A1 (Phonetic)</option>
+                </select>
+              </label>
+              <button id="shiftToggleBtn" class="shift-toggle px-3 py-1 rounded text-sm" title="Latch Shift for virtual keys">Shift</button>
+            </div>
+          </div>
+          <div id="keyboardLayout" class="mb-4"></div>
+
+          <!-- Finger Guide -->
+          <div class="finger-guide">
+            <div class="text-sm text-gray-700">Finger placement guide (next key’s finger glows)</div>
+            <div class="hands">
+              <div class="hand">
+                <div class="finger-dot LP" id="dot-LP" title="Left pinky"></div>
+                <div class="finger-dot LR" id="dot-LR" title="Left ring"></div>
+                <div class="finger-dot LM" id="dot-LM" title="Left middle"></div>
+                <div class="finger-dot LI" id="dot-LI" title="Left index"></div>
+                <div class="finger-dot TH" id="dot-LTH" title="Left thumb"></div>
+              </div>
+              <div class="hand">
+                <div class="finger-dot TH" id="dot-RTH" title="Right thumb"></div>
+                <div class="finger-dot RI" id="dot-RI" title="Right index"></div>
+                <div class="finger-dot RM" id="dot-RM" title="Right middle"></div>
+                <div class="finger-dot RR" id="dot-RR" title="Right ring"></div>
+                <div class="finger-dot RP" id="dot-RP" title="Right pinky"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+        <div class="text-center">
+          <div class="text-6xl mb-4" id="resultEmoji">🎉</div>
+          <h2 class="text-2xl font-bold mb-4">Lesson Complete!</h2>
+          <div class="space-y-2 mb-6">
+            <div class="flex justify-between"><span>WPM:</span><span id="finalWPM" class="font-bold">0</span></div>
+            <div class="flex justify-between"><span>Accuracy:</span><span id="finalAccuracy" class="font-bold">0%</span></div>
+            <div class="flex justify-between"><span>Time:</span><span id="finalTime" class="font-bold">0:00</span></div>
+            <div class="flex justify-between"><span>Errors:</span><span id="finalErrors" class="font-bold">0</span></div>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="tryAgain()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex-1">Try Again</button>
+            <button onclick="backToLessons()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex-1">New Lesson</button>
+          </div>
+          <div class="mt-3">
+            <button id="practiceBtn" onclick="startPracticeMistakes()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg w-full hidden">
+              Practice Mistakes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History/Profile Modal -->
+    <div id="historyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-[min(900px,92vw)] max-h-[86vh] overflow-auto">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-xl font-bold">Profile & History</h3>
+          <button onclick="closeHistory()" class="text-gray-600 hover:text-black"><i class="fa fa-times"></i></button>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div class="border rounded-lg p-3">
+            <canvas id="historyChart" width="420" height="220"></canvas>
+          </div>
+          <div class="border rounded-lg p-3">
+            <h4 class="font-semibold mb-2">Recent Sessions</h4>
+            <div class="overflow-auto max-h-56">
+              <table class="w-full text-sm">
+                <thead class="sticky top-0 bg-white">
+                  <tr class="text-left border-b">
+                    <th class="py-1 pr-2">Date</th>
+                    <th class="py-1 pr-2">Lesson</th>
+                    <th class="py-1 pr-2">WPM</th>
+                    <th class="py-1">Accuracy</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="border rounded-lg p-3 lg:col-span-2">
+            <h4 class="font-semibold mb-2">Achievements</h4>
+            <div id="badgesWrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="testChip" style="display:none"></div>
+
+  <script src="./keymaps.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

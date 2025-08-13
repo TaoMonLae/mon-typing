@@ -304,6 +304,13 @@ function updateFingerGuide(){
 }
 
 /* Timer & Stats */
+function resetStats(){
+  startTime = null;
+  document.getElementById('wpmDisplay').textContent = '0';
+  document.getElementById('accuracyDisplay').textContent = '100%';
+  document.getElementById('timeDisplay').textContent = '0:00';
+  updateStats();
+}
 function updateTimer(){
   if(startTime){
     const elapsed=(new Date()-startTime)/1000;
